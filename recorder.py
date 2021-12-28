@@ -3,6 +3,8 @@ import wave
 from array import array
 import config
 import time
+import os
+
 
 class Recording:
     def __init__(self):
@@ -27,23 +29,37 @@ class Recording:
         for i in range(0, int(self.rate / self.chunk * self.record_seconds)):
             data = self.stream.read(self.chunk)
             self.frames.append(data)
-        self.stream.stop_stream()
-        self.stream.close()
-        self.driver.terminate()
 
     def check_if_silent(self):
         data = array('h', self.stream.read(self.chunk))
         return max(data) < self.silence_threshold
 
+    def close_stream(self):
+        self.stream.stop_stream()
+        self.stream.close()
+        self.driver.terminate()
+
     def save_file(self):
         wavfile = wave.open(self.wave_filename, 'wb')
         wavfile.setnchannels(self.channels)
-        wavfile.setsampwidth(self.driver.get_sample_size(format))
+        wavfile.setsampwidth(self.driver.get_sample_size(self.pyaudio_format))
         wavfile.setframerate(self.rate)
         wavfile.writeframes(b''.join(self.frames))
         wavfile.close()
 
+    def del_file(self):
+        os.remove(self.wave_filename)
 
+
+if __name__ == '__main__':
+    test = Recording()
+    print("Recording...")
+    test.do_recording()
+    print("Finished Recording")
+    print("Silent: " + str(test.check_if_silent()))
+    test.close_stream()
+    test.save_file()
+    print("File saved...")
 
 
 
