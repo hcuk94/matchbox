@@ -16,7 +16,9 @@ if __name__ == '__main__':
         scrobble.scrobble()
         print("Successfully scrobbled {} by {} from album {}".format(match_result['title'],
                                                                      match_result['artist'], match_result['album']))
+        recording.close_stream()
+        recording.del_file()
     else:
         print("Recording has been deemed silent, so we will do nothing.")
-    recording.close_stream()
-    recording.del_file()
+        recording.close_stream()
+
