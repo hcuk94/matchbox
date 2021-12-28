@@ -1,5 +1,7 @@
+import config
 import lastfm
 import audd
+import acrcloud
 import recorder
 
 if __name__ == '__main__':
@@ -9,7 +11,10 @@ if __name__ == '__main__':
     if recording.check_if_silent() is False:
         recording.save_file()
         file = recording.wave_filename
-        track_match = audd.ApiReq(file)
+        if config.mrt_api == 'acrcloud':
+            track_match = acrcloud.ApiReq(file)
+        else:
+            track_match = audd.ApiReq(file)
         match_result = track_match.match_file()
         scrobble = lastfm.Scrobbler(match_result)
         scrobble.now_playing()
