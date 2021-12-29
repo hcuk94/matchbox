@@ -10,6 +10,7 @@ config.py
 *.wav
 *.log
 *.db
+!tests/sample-audio/*
 
 # PyCharm/IntelliJ
 *.idea/*
