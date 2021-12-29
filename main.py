@@ -9,7 +9,7 @@ from time import sleep
 if __name__ == '__main__':
     logging.basicConfig(level=config.log_level, filename=config.log_filename
                         , filemode="a+", format="%(asctime)-15s %(levelname)-8s %(message)s")
-
+    last_scrobble = {}
     logging.info("Application Started")
     while True:
         logging.debug("Initialising Recorder")
@@ -37,14 +37,19 @@ if __name__ == '__main__':
             if match_result['status'] != 0:
                 logging.error("MRT API {} encountered error: {}".format(config.mrt_api, match_result['status']))
             else:
-                logging.debug("Initialising scrobbler...")
-                scrobble = lastfm.Scrobbler(match_result)
-                logging.debug("Updating 'now playing'...")
-                scrobble.now_playing()
-                logging.debug("Scrobbling track...")
-                scrobble.scrobble()
-                logging.info("Successfully scrobbled {} by {} from album {}"
-                             .format(match_result['title'], match_result['artist'], match_result['album']))
+                if match_result != last_scrobble:
+                    logging.debug("Music data does not match previous scrobble, so we should scrobble.")
+                    logging.debug("Initialising scrobbler...")
+                    scrobble = lastfm.Scrobbler(match_result)
+                    logging.debug("Updating 'now playing'...")
+                    scrobble.now_playing()
+                    logging.debug("Scrobbling track...")
+                    scrobble.scrobble()
+                    logging.info("Successfully scrobbled {} by {} from album {}"
+                                 .format(match_result['title'], match_result['artist'], match_result['album']))
+                    last_scrobble = match_result
+                else:
+                    logging.debug("Music data is same as previous scrobble, so we will not scrobble.")
             recording.close_stream()
             logging.debug("Deleting temporary file {}...".format(file))
             recording.del_file()
