@@ -23,16 +23,14 @@ class Audd(providers.LookupProviderInterface):
             self.logger.debug('Response from audd api: %s', json_response)
 
             status = json_response['status']
-            # result = json_response['result']
+            result = json_response['result']
 
             if status == "success" and result is not None:
                 return providers.LookupResult(
                     response=status_map[status],
                     artist=json_response['result']['artist'],
                     title=json_response['result']['title'],
-                    additional_info={
-                        'audd_result': json_response['result']
-                    }
+                    album=json_response['result']['album']
                 )
             elif status == "success" and result is None:
                 return providers.LookupResult(

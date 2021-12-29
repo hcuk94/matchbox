@@ -5,7 +5,7 @@ import os
 
 
 class LookupResult:
-    def __init__(self, response, artist=None, title=None, additional_info=None):
+    def __init__(self, response, artist=None, title=None, album=None, additional_info=None):
         """
         Provides a lookup result from a service
         :type response: LookupResponseCode
@@ -16,15 +16,17 @@ class LookupResult:
         if additional_info is None:
             additional_info = {}
 
+        self.response = response
         self.artist = artist
         self.title = title
+        self.album = album
         self.additional_info = additional_info
 
     def __str__(self):
         result = {
             'artist': self.artist,
             'title': self.title,
-            'additional_info': self.additional_info
+            'album': self.album
         }
 
         return json.dumps(result)

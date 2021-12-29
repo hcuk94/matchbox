@@ -40,9 +40,7 @@ class ACRCloud(providers.LookupProviderInterface):
                     response=providers.LookupResponseCode.SUCCESS,
                     artist=json_response['metadata']['music'][0]['artists'][0]['name'],
                     title=json_response['metadata']['music'][0]['title'],
-                    additional_info={
-                        'album': json_response['metadata']['music'][0]['album']['name']
-                    }
+                    album=json_response['metadata']['music'][0]['album']['name']
                 )
             else:
                 return providers.LookupResult(
