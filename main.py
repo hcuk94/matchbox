@@ -34,14 +34,17 @@ if __name__ == '__main__':
                 track_match = audd.ApiReq(file)
             match_result = track_match.match_file()
             logging.debug("MRT API Output: {}".format(match_result))
-            logging.debug("Initialising scrobbler...")
-            scrobble = lastfm.Scrobbler(match_result)
-            logging.debug("Updating 'now playing'...")
-            scrobble.now_playing()
-            logging.debug("Scrobbling track...")
-            scrobble.scrobble()
-            logging.info("Successfully scrobbled {} by {} from album {}".format(match_result['title'],
-                                                                         match_result['artist'], match_result['album']))
+            if match_result['status'] != 0:
+                logging.error("MRT API {} encountered error: {}".format(config.mrt_api, match_result['status']))
+            else:
+                logging.debug("Initialising scrobbler...")
+                scrobble = lastfm.Scrobbler(match_result)
+                logging.debug("Updating 'now playing'...")
+                scrobble.now_playing()
+                logging.debug("Scrobbling track...")
+                scrobble.scrobble()
+                logging.info("Successfully scrobbled {} by {} from album {}"
+                             .format(match_result['title'], match_result['artist'], match_result['album']))
             recording.close_stream()
             logging.debug("Deleting temporary file {}...".format(file))
             recording.del_file()

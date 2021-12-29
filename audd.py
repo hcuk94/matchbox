@@ -2,6 +2,10 @@ import config
 import requests
 import json
 
+status_map = {
+    'success': 0
+}
+
 
 class ApiReq:
     def __init__(self, filename):
@@ -20,11 +24,17 @@ class ApiReq:
             }
             self.result = requests.post('https://api.audd.io/', data=self.data, files=self.files)
             json_response = json.loads(self.result.text)
-            self.match_output = {
-                'artist': json_response['result']['artist'],
-                'title': json_response['result']['title'],
-                'album': json_response['result']['album']
-            }
+            status = json_response['status']
+            result = json_response['result']
+            if status == "success" and result is not None:
+                self.match_output = {
+                    'status': status_map[status],
+                    'artist': json_response['result']['artist'],
+                    'title': json_response['result']['title'],
+                    'album': json_response['result']['album']
+                }
+            elif status == "success" and result is None:
+                self.match_output['status'] = 1001
         return self.match_output
 
 

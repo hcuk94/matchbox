@@ -1,12 +1,11 @@
-import acrcloud
+import audd
 
 # This one should match - Music by Joystock - https://www.joystock.org
 file = 'sample-audio/joystock-popsicle.wav'
 # This one should not
 # file = 'sample-audio/walkthedog.wav'
 
-
-test = acrcloud.ApiReq(file)
+test = audd.ApiReq(file)
 output = test.match_file()
 
 raw_output = test.result.text

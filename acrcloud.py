@@ -46,9 +46,14 @@ class ApiReq:
             self.result = requests.post(self.endpoint_url, data=self.data, files=self.files)
             self.result.encoding = 'utf-8'
             json_response = json.loads(self.result.text)
-            self.match_output = {
-                'artist': json_response['metadata']['music'][0]['artists'][0]['name'],
-                'title': json_response['metadata']['music'][0]['title'],
-                'album': json_response['metadata']['music'][0]['album']['name']
-            }
+            status = json_response['status']['code']
+            if status == 0:
+                self.match_output = {
+                    'status': status,
+                    'artist': json_response['metadata']['music'][0]['artists'][0]['name'],
+                    'title': json_response['metadata']['music'][0]['title'],
+                    'album': json_response['metadata']['music'][0]['album']['name']
+                }
+            else:
+                self.match_output['status'] = status
         return self.match_output
