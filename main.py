@@ -1,16 +1,21 @@
 import config
 import lastfm
-import audd
-import acrcloud
 import recorder
 import logging
 from time import sleep
+
+from providers.acrcloud import ACRCloud
+from providers.audd import Audd
 
 if __name__ == '__main__':
     logging.basicConfig(level=config.log_level, filename=config.log_filename
                         , filemode="a+", format="%(asctime)-15s %(levelname)-8s %(message)s")
     last_scrobble = {}
     logging.info("Application Started")
+
+    acrcloud = ACRCloud(config.acrcloud_config)
+    audd = Audd(config.audd_config)
+
     while True:
         logging.debug("Initialising Recorder")
         recording = recorder.Recording()
@@ -28,10 +33,10 @@ if __name__ == '__main__':
             logging.debug("Checking MRT API option...")
             if config.mrt_api == 'acrcloud':
                 logging.debug("Matching track using API {}".format(config.mrt_api))
-                track_match = acrcloud.ApiReq(file)
+                track_match = acrcloud.lookup_sample(file)
             else:
                 logging.debug("Matching track using API {}".format(config.mrt_api))
-                track_match = audd.ApiReq(file)
+                track_match = audd.lookup_sample(file)
             match_result = track_match.match_file()
             logging.debug("MRT API Output: {}".format(match_result))
             if match_result['status'] != 0:

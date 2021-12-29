@@ -11,12 +11,16 @@ lastfm_username = ''
 lastfm_password = ''
 
 # Audd.io API Config
-audd_api_key = ''
+aud_config = {
+    'api_key': ''
+}
 
 # ACRCloud API Config
-acrcloud_access_key = ''
-acrcloud_secret_key = ''
-acrcloud_endpoint_domain = 'identify-eu-west-1.acrcloud.com'
+acrcloud_config = {
+    'access_key': '',
+    'secret_key': '',
+    'endpoint_domain': 'identify-eu-west-1.acrcloud.com'
+}
 
 # Recorder Config
 recorder_silence_threshold = 500
