@@ -32,7 +32,7 @@ if __name__ == '__main__':
             # file = recording.wave_filename
             # logging.debug("File saved: {}".format(file))
             recording.save_mem()
-            file = recording.wave_file
+            file = recording.wave_file.read()
             logging.debug("Checking MRT API option...")
             if config.mrt_api == 'acrcloud':
                 logging.debug("Matching track using API {}".format(config.mrt_api))
