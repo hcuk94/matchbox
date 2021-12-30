@@ -16,16 +16,16 @@ class Scrobbler:
 
     def now_playing(self):
         self.scrobbler.update_now_playing(
-            artist=self.track_data['artist'],
-            title=self.track_data['title'],
-            album=self.track_data['album']
+            artist=self.track_data.artist,
+            title=self.track_data.title,
+            album=self.track_data.album
         )
 
     def scrobble(self):
         self.scrobbler.scrobble(
-            artist=self.track_data['artist'],
-            title=self.track_data['title'],
-            album=self.track_data['album'],
+            artist=self.track_data.artist,
+            title=self.track_data.title,
+            album=self.track_data.album,
             timestamp=time.time()
         )
 

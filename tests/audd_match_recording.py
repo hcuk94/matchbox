@@ -1,17 +1,13 @@
-import audd
+import config
+from providers.audd import Audd
 
 # This one should match - Music by Joystock - https://www.joystock.org
 file = 'sample-audio/joystock-popsicle.wav'
 # This one should not
 # file = 'sample-audio/walkthedog.wav'
 
-test = audd.ApiReq(file)
-output = test.match_file()
 
-raw_output = test.result.text
-processed_output = output
+audd = Audd(config.aud_config)
+output = audd.lookup_sample(file)
 
-print("Raw output:")
-print(raw_output)
-print("Processed output:")
-print(processed_output)
+print("Processed output:" + str(output))
