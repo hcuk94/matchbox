@@ -7,7 +7,7 @@ file = 'sample-audio/joystock-popsicle.wav'
 # file = 'sample-audio/walkthedog.wav'
 
 
-audd = AcoustID(config.audd_config)
-output = audd.lookup_sample(file)
+acoustid = AcoustID(config.audd_config)
+output = acoustid.lookup_sample(file)
 
 print("Processed output:" + str(output))
