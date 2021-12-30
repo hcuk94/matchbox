@@ -11,7 +11,7 @@ lastfm_username = ''
 lastfm_password = ''
 
 # Audd.io API Config
-aud_config = {
+audd_config = {
     'api_key': ''
 }
 
