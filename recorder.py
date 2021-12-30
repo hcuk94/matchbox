@@ -27,11 +27,11 @@ class Recording:
 
     def do_recording(self):
         for i in range(0, int(self.rate / self.chunk * self.record_seconds)):
-            data = self.stream.read(self.chunk)
+            data = self.stream.read(self.chunk, exception_on_overflow=False)
             self.frames.append(data)
 
     def check_if_silent(self):
-        data = array('h', self.stream.read(self.chunk))
+        data = array('h', self.stream.read(self.chunk, exception_on_overflow=False))
         return max(data) < self.silence_threshold
 
     def close_stream(self):
