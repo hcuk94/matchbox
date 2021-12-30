@@ -12,7 +12,7 @@ import providers
 
 class ACRCloud(providers.LookupProviderInterface):
     def lookup_sample(self, sample) -> providers.LookupResult:
-        sample_bytes = os.path.getsize(sample)
+        sample_bytes = sample.nbytes()
 
         files = [
             ('sample', ('sample.wav', sample, 'audio/wav'))
