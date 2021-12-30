@@ -32,7 +32,7 @@ if __name__ == '__main__':
             # file = recording.wave_filename
             # logging.debug("File saved: {}".format(file))
             recording.save_mem()
-            file = recording.wave_file.read()
+            file = recording.wave_file.getbuffer()
             logging.debug("Checking MRT API option...")
             if config.mrt_api == 'acrcloud':
                 logging.debug("Matching track using API {}".format(config.mrt_api))
@@ -62,8 +62,8 @@ if __name__ == '__main__':
                 else:
                     logging.debug("Music data is same as previous scrobble, so we will not scrobble.")
             recording.close_stream()
-            logging.debug("Deleting temporary file {}...".format(file))
-            recording.del_file()
+            # logging.debug("Deleting temporary file {}...".format(file))
+            # recording.del_file()
         else:
             logging.info("Recording was deemed as silent, no action will be taken.")
             recording.close_stream()
