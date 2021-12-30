@@ -1,8 +1,15 @@
-# ScrobbleBox Sample Config File
+# MatchBox Sample Config File
 
 # General Config
 # MRT API - can be 'acrcloud' or 'audd'
 mrt_api = 'audd'
+
+# Re-trigger time (seconds)
+retrigger_time = 180
+
+# Logging Config
+log_filename = 'matchbox.log'  # File to log to
+log_level = 10  # 0 NOTSET, 10 DEBUG, 20 INFO, 30 WARNING, 40 ERROR, 50 CRITICAL
 
 # Last.fm Account/API Config
 lastfm_api_key = ''
