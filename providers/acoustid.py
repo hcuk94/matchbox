@@ -14,13 +14,14 @@ class AcoustID(providers.LookupProviderInterface):
         except acoustid.WebServiceError as exc:
             print("web service request failed:", exc.message)
 
-        first = True
-        for score, rid, title, artist in results:
-            if first:
-                first = False
-            else:
-                print()
-            print('%s - %s' % (artist, title))
-            print('http://musicbrainz.org/recording/%s' % rid)
-            print('Score: %i%%' % (int(score * 100)))
+        print(results)
+        # first = True
+        # for score, rid, title, artist in results:
+        #     if first:
+        #         first = False
+        #     else:
+        #         print()
+        #     print('%s - %s' % (artist, title))
+        #     print('http://musicbrainz.org/recording/%s' % rid)
+        #     print('Score: %i%%' % (int(score * 100)))
 
