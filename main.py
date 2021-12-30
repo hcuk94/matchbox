@@ -42,6 +42,10 @@ if __name__ == '__main__':
             if track_match.response != providers.LookupResponseCode.SUCCESS:
                 logging.error("MRT API {} encountered error: {}".format(config.mrt_api, track_match.response))
             else:
+                this_scrobble = {
+                    'title': track_match.title,
+                    'artist': track_match.artist
+                }
                 if track_match != last_scrobble:
                     logging.debug("Music data does not match previous scrobble, so we should scrobble.")
                     logging.debug("Initialising scrobbler...")
@@ -52,7 +56,7 @@ if __name__ == '__main__':
                     scrobble.scrobble()
                     logging.info("Successfully scrobbled {} by {} from album {}"
                                  .format(track_match.title, track_match.artist, track_match.album))
-                    last_scrobble = track_match
+                    last_scrobble = this_scrobble
                 else:
                     logging.debug("Music data is same as previous scrobble, so we will not scrobble.")
             recording.close_stream()
