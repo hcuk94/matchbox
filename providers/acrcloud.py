@@ -15,7 +15,7 @@ class ACRCloud(providers.LookupProviderInterface):
         sample_bytes = os.path.getsize(sample)
 
         files = [
-            ('sample', (basename(sample), sample, 'audio/wav'))
+            ('sample', ('sample.wav', sample, 'audio/wav'))
         ]
 
         timestamp = time.time()
