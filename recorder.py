@@ -1,3 +1,5 @@
+import io
+
 import pyaudio
 import wave
 from array import array
@@ -15,6 +17,7 @@ class Recording:
         self.rate = config.recorder_rate
         self.record_seconds = config.recorder_record_seconds
         self.wave_filename = 'recording' + str(time.time()) + '.wav'
+        self.wave_file = io.BytesIO()
         self.driver = pyaudio.PyAudio()
         self.frames = []
         self.stream = self.driver.open(
@@ -47,6 +50,14 @@ class Recording:
         wavfile.writeframes(b''.join(self.frames))
         wavfile.close()
 
+    def save_mem(self):
+        wavfile = wave.open(self.wave_file, 'wb')
+        wavfile.setnchannels(self.channels)
+        wavfile.setsampwidth(self.driver.get_sample_size(self.pyaudio_format))
+        wavfile.setframerate(self.rate)
+        wavfile.writeframes(b''.join(self.frames))
+        wavfile.close()
+
     def del_file(self):
         os.remove(self.wave_filename)
 
@@ -58,7 +69,7 @@ if __name__ == '__main__':
     print("Finished Recording")
     print("Silent: " + str(test.check_if_silent()))
     test.close_stream()
-    test.save_file()
+    test.save_mem()
     print("File saved...")
 
 

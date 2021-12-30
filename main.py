@@ -27,10 +27,12 @@ if __name__ == '__main__':
         is_silent = recording.check_if_silent()
         if is_silent is False:
             logging.debug("Recording is not silent.")
-            logging.debug("Saving temporary file...")
-            recording.save_file()
-            file = recording.wave_filename
-            logging.debug("File saved: {}".format(file))
+            # logging.debug("Saving temporary file...")
+            # recording.save_file()
+            # file = recording.wave_filename
+            # logging.debug("File saved: {}".format(file))
+            recording.save_mem()
+            file = recording.wave_file
             logging.debug("Checking MRT API option...")
             if config.mrt_api == 'acrcloud':
                 logging.debug("Matching track using API {}".format(config.mrt_api))

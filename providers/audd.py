@@ -13,10 +13,9 @@ class Audd(providers.LookupProviderInterface):
             'api_token': self.config['api_key']
         }
 
-        with open(sample, 'rb') as file:
-            files = {
-                'file': file
-            }
+        files = {
+            'file': sample
+        }
 
             result = requests.post('https://api.audd.io/', data=data, files=files)
             json_response = result.json()
