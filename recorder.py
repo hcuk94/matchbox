@@ -60,17 +60,3 @@ class Recording:
 
     def del_file(self):
         os.remove(self.wave_filename)
-
-
-if __name__ == '__main__':
-    test = Recording()
-    print("Recording...")
-    test.do_recording()
-    print("Finished Recording")
-    print("Silent: " + str(test.check_if_silent()))
-    test.close_stream()
-    test.save_mem()
-    print("File saved...")
-
-
-
