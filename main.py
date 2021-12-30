@@ -46,7 +46,7 @@ if __name__ == '__main__':
                     'title': track_match.title,
                     'artist': track_match.artist
                 }
-                if track_match != last_scrobble:
+                if this_scrobble != last_scrobble:
                     logging.debug("Music data does not match previous scrobble, so we should scrobble.")
                     logging.debug("Initialising scrobbler...")
                     scrobble = lastfm.Scrobbler(track_match)
