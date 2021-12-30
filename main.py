@@ -7,6 +7,16 @@ from time import sleep
 
 from providers.acrcloud import ACRCloud
 from providers.audd import Audd
+acrcloud = ACRCloud(config.providers_match['acrcloud']['config'])
+audd = Audd(config.providers_match['audd']['config'])
+
+def do_match():
+    providers_match = sorted(config.providers_match, key=lambda x: config.providers_match[x]['priority'])
+    print(providers_match)
+    for provider_config in providers_match:
+        if config.providers_match[provider_config]['enabled'] is True:
+
+do_match()
 
 if __name__ == '__main__':
     logging.basicConfig(level=config.log_level, filename=config.log_filename
@@ -14,8 +24,8 @@ if __name__ == '__main__':
     last_notify = {}
     logging.info("Application Started")
 
-    acrcloud = ACRCloud(config.acrcloud_config)
-    audd = Audd(config.audd_config)
+
+
 
     while True:
         logging.debug("Initialising Recorder")

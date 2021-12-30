@@ -46,6 +46,7 @@ class LookupProviderInterface:
     logger.addHandler(log_output)
 
     def __init__(self, config):
+        super().__init__(config)
         self.config = config
 
     def lookup_sample(self, sample) -> LookupResult:
@@ -54,3 +55,6 @@ class LookupProviderInterface:
         :param sample: sample audio recording
         """
         pass
+
+    def get_sub_classes(self):
+        return LookupProviderInterface.__subclasses__()
