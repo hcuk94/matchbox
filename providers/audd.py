@@ -3,7 +3,8 @@ import requests
 import providers
 
 status_map = {
-    'success': providers.LookupResponseCode.SUCCESS
+    'success': providers.LookupResponseCode.SUCCESS,
+    907: providers.LookupResponseCode.NO_RESULT
 }
 
 
@@ -22,16 +23,26 @@ class Audd(providers.LookupProviderInterface):
         self.logger.debug('Response from audd api: %s', json_response)
 
         status = json_response['status']
-        result = json_response['result']
 
-        if status == "success" and result is not None:
+        if status == "success":
+            result = json_response['result']
+            if result is not None:
+                return providers.LookupResult(
+                    response=status_map[status],
+                    artist=json_response['result']['artist'],
+                    title=json_response['result']['title'],
+                    album=json_response['result']['album']
+                )
+            else:
+                return providers.LookupResult(
+                    response=status_map[status]
+                )
+        elif status == "error":
+            error_code = json_response['error']['error_code']
+            try:
+                error = status_map[error_code]
+            except KeyError:
+                error = providers.LookupResponseCode.UNKNOWN_ERROR
             return providers.LookupResult(
-                response=status_map[status],
-                artist=json_response['result']['artist'],
-                title=json_response['result']['title'],
-                album=json_response['result']['album']
-            )
-        elif status == "success" and result is None:
-            return providers.LookupResult(
-                response=status_map[status]
+                response=error
             )

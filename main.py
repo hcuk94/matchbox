@@ -4,36 +4,44 @@ import providers
 import recorder
 import logging
 from time import sleep
+from inspect import isclass
+from pkgutil import iter_modules
+from importlib import import_module
 
-from providers.acrcloud import ACRCloud
-from providers.audd import Audd
-acrcloud = ACRCloud(config.providers_match['acrcloud']['config'])
-audd = Audd(config.providers_match['audd']['config'])
+# Import Match Providers
+package_dir = 'providers'
+for (_, module_name, _) in iter_modules([package_dir]):
+    module = import_module(f"providers.{module_name}")
+    for attribute_name in dir(module):
+        attribute = getattr(module, attribute_name)
+        if isclass(attribute):
+            globals()[attribute_name] = attribute
 
-def do_match():
+
+def do_match(sample):
     providers_match = sorted(config.providers_match, key=lambda x: config.providers_match[x]['priority'])
-    print(providers_match)
     for provider_config in providers_match:
         if config.providers_match[provider_config]['enabled'] is True:
+            logging.debug("Using match provider %s", provider_config)
+            provider_class = globals()[provider_config]
+            lookup_provider = provider_class(config.providers_match[provider_config]['config'])
+            lookup = lookup_provider.lookup_sample(sample)
+            if lookup.response == providers.LookupResponseCode.SUCCESS:
+                return lookup
+    return providers.LookupResponseCode.NO_RESULT
 
-do_match()
 
 if __name__ == '__main__':
-    logging.basicConfig(level=config.log_level, filename=config.log_filename
-                        , filemode="a+", format="%(asctime)-15s %(levelname)-8s %(message)s")
+    logging.basicConfig(level=config.log_level, filename=config.log_filename,
+                        filemode="a+", format="%(asctime)-15s %(levelname)-8s %(message)s")
     last_notify = {}
-    logging.info("Application Started")
-
-
-
+    logging.info("Application Started.")
 
     while True:
         logging.debug("Initialising Recorder")
         recording = recorder.Recording()
-
         logging.debug("Recording {} seconds of audio...".format(config.recorder_record_seconds))
         recording.do_recording()
-
         logging.debug("Checking if recording is silent...")
         is_silent = recording.check_if_silent()
 
@@ -42,15 +50,8 @@ if __name__ == '__main__':
             logging.debug("Saving to memory...")
             recording.save_mem()
             file = recording.wave_file.getbuffer()
-
-            logging.debug("Checking MRT API option...")
-            if config.mrt_api == 'acrcloud':
-                logging.debug("Matching track using API {}".format(config.mrt_api))
-                track_match = acrcloud.lookup_sample(file)
-            else:
-                logging.debug("Matching track using API {}".format(config.mrt_api))
-                track_match = audd.lookup_sample(file)
-            logging.debug("MRT API Output: {}".format(track_match))
+            logging.debug("Passing to match function...")
+            track_match = do_match(file)
 
             if track_match.response != providers.LookupResponseCode.SUCCESS:
                 logging.error("MRT API {} encountered error: {}".format(config.mrt_api, track_match.response))
