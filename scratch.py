@@ -5,14 +5,14 @@ from pathlib import Path
 import config
 import wave
 from importlib import import_module
-from providers import LookupProviderInterface
+from providers_match import LookupProviderInterface
 
 # iterate through the modules in the current package
-package_dir = 'providers'
+package_dir = 'providers_match'
 for (_, module_name, _) in iter_modules([package_dir]):
 
     # import the module and iterate through its attributes
-    module = import_module(f"providers.{module_name}")
+    module = import_module(f"providers_match.{module_name}")
     for attribute_name in dir(module):
         attribute = getattr(module, attribute_name)
 

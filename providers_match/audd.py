@@ -1,15 +1,15 @@
 import requests
 
-import providers
+import providers_match
 
 status_map = {
-    'success': providers.LookupResponseCode.SUCCESS,
-    907: providers.LookupResponseCode.NO_RESULT
+    'success': providers_match.LookupResponseCode.SUCCESS,
+    907: providers_match.LookupResponseCode.NO_RESULT
 }
 
 
-class Audd(providers.LookupProviderInterface):
-    def lookup_sample(self, sample) -> providers.LookupResult:
+class Audd(providers_match.LookupProviderInterface):
+    def lookup_sample(self, sample) -> providers_match.LookupResult:
         data = {
             'api_token': self.config['api_key']
         }
@@ -27,22 +27,22 @@ class Audd(providers.LookupProviderInterface):
         if status == "success":
             result = json_response['result']
             if result is not None:
-                return providers.LookupResult(
+                return providers_match.LookupResult(
                     response=status_map[status],
                     artist=json_response['result']['artist'],
                     title=json_response['result']['title'],
                     album=json_response['result']['album']
                 )
             else:
-                return providers.LookupResult(
-                    response=providers.LookupResponseCode.NO_RESULT
+                return providers_match.LookupResult(
+                    response=providers_match.LookupResponseCode.NO_RESULT
                 )
         elif status == "error":
             error_code = json_response['error']['error_code']
             try:
                 error = status_map[error_code]
             except KeyError:
-                error = providers.LookupResponseCode.UNKNOWN_ERROR
-            return providers.LookupResult(
+                error = providers_match.LookupResponseCode.UNKNOWN_ERROR
+            return providers_match.LookupResult(
                 response=error
             )

@@ -1,5 +1,5 @@
 import config
-from providers.audd import Audd
+from providers_match.audd import Audd
 
 # This one should match - Music by Joystock - https://www.joystock.org
 file = 'sample-audio/joystock-popsicle.wav'

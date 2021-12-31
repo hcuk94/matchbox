@@ -47,14 +47,16 @@ class LookupProviderInterface:
     logger.addHandler(log_output)
 
     def __init__(self, config):
-        # super().__init__(config)
         self.config = config
 
-    def lookup_sample(self, sample) -> LookupResult:
+    def send_notify(self, notify_data) -> LookupResult:
         """
         Looks up the details of a song from the provided sample
-        :param sample: sample audio recording
+        :param notify_data: sample audio recording
         """
+        pass
+
+    def send_keepalive(self, notify_data) -> LookupResult:
         pass
 
     def get_sub_classes(self):

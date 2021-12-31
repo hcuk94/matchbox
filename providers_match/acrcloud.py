@@ -7,11 +7,11 @@ import time
 from os.path import basename
 
 import requests
-import providers
+import providers_match
 
 
-class ACRCloud(providers.LookupProviderInterface):
-    def lookup_sample(self, sample) -> providers.LookupResult:
+class ACRCloud(providers_match.LookupProviderInterface):
+    def lookup_sample(self, sample) -> providers_match.LookupResult:
         sample_bytes = len(sample)
 
         files = [
@@ -35,15 +35,15 @@ class ACRCloud(providers.LookupProviderInterface):
         json_response = json.loads(result.text)
         status = json_response['status']['code']
         if status == 0:
-            return providers.LookupResult(
-                response=providers.LookupResponseCode.SUCCESS,
+            return providers_match.LookupResult(
+                response=providers_match.LookupResponseCode.SUCCESS,
                 artist=json_response['metadata']['music'][0]['artists'][0]['name'],
                 title=json_response['metadata']['music'][0]['title'],
                 album=json_response['metadata']['music'][0]['album']['name']
             )
         else:
-            return providers.LookupResult(
-                response=providers.LookupResponseCode.NO_RESULT
+            return providers_match.LookupResult(
+                response=providers_match.LookupResponseCode.NO_RESULT
             )
 
     def sign_request(self, method, uri, data_type, timestamp):

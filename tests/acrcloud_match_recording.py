@@ -1,5 +1,5 @@
 import config
-from providers.acrcloud import ACRCloud
+from providers_match.acrcloud import ACRCloud
 
 # This one should match - Music by Joystock - https://www.joystock.org
 # file = 'sample-audio/joystock-popsicle.wav'

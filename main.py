@@ -1,6 +1,6 @@
 import config
-import lastfm
-import providers
+import providers_match
+import providers_notify
 import recorder
 import logging
 from time import sleep
@@ -9,9 +9,18 @@ from pkgutil import iter_modules
 from importlib import import_module
 
 # Import Match Providers
-package_dir = 'providers'
+package_dir = 'providers_match'
 for (_, module_name, _) in iter_modules([package_dir]):
-    module = import_module(f"providers.{module_name}")
+    module = import_module(f"providers_match.{module_name}")
+    for attribute_name in dir(module):
+        attribute = getattr(module, attribute_name)
+        if isclass(attribute):
+            globals()[attribute_name] = attribute
+
+# Import Notify Providers
+package_dir = 'providers_notify'
+for (_, module_name, _) in iter_modules([package_dir]):
+    module = import_module(f"{package_dir}.{module_name}")
     for attribute_name in dir(module):
         attribute = getattr(module, attribute_name)
         if isclass(attribute):
@@ -19,17 +28,17 @@ for (_, module_name, _) in iter_modules([package_dir]):
 
 
 def do_match(sample):
-    providers_match = sorted(config.providers_match, key=lambda x: config.providers_match[x]['priority'])
+    providers = sorted(config.providers_match, key=lambda x: config.providers_match[x]['priority'])
     result = {
-        'status': providers.LookupResponseCode.NO_RESULT
+        'status': providers_match.LookupResponseCode.NO_RESULT
     }
-    for provider_config in providers_match:
+    for provider_config in providers:
         if config.providers_match[provider_config]['enabled'] is True:
             logging.debug("Using match provider %s", provider_config)
             provider_class = globals()[provider_config]
             lookup_provider = provider_class(config.providers_match[provider_config]['config'])
             lookup = lookup_provider.lookup_sample(sample)
-            if lookup.response == providers.LookupResponseCode.SUCCESS:
+            if lookup.response == providers_match.LookupResponseCode.SUCCESS:
                 logging.debug("Successful match.")
                 result['lookup'] = lookup
                 result['status'] = lookup.response
@@ -37,6 +46,18 @@ def do_match(sample):
             else:
                 logging.debug("Error returned from match interface: %s", lookup.response)
     return result
+
+
+def do_notify(track_data, full_notify=False, keepalive=False):
+    providers = providers_notify.LookupProviderInterface.__subclasses__()
+    for prov in providers:
+        prov_name = str(prov.__name__)
+        prov_conf = config.providers_notify[prov_name]['config']
+        prov_class = prov(prov_conf)
+        if full_notify is True:
+            prov_class.send_notify(track_data)
+        if keepalive is True:
+            prov_class.send_keepalive(track_data)
 
 
 if __name__ == '__main__':
@@ -61,7 +82,7 @@ if __name__ == '__main__':
             logging.debug("Passing to match function...")
             track_match = do_match(file)
 
-            if track_match['status'] != providers.LookupResponseCode.SUCCESS:
+            if track_match['status'] != providers_match.LookupResponseCode.SUCCESS:
                 logging.warning("Track could not be identified by any configured matching provider")
             else:
                 this_notify = {
@@ -69,18 +90,17 @@ if __name__ == '__main__':
                     'artist': track_match['lookup'].artist
                 }
                 if this_notify != last_notify:
-                    logging.debug("Music data does not match previous notify, so we should notify.")
-                    logging.debug("Initialising notify agent...")
-                    notify = lastfm.LastFM(track_match['lookup'])
-                    logging.debug("Updating 'now playing'...")
-                    notify.now_playing()
-                    logging.debug("Notifying track...")
-                    notify.notify()
-                    logging.info("Successfully notified {} by {} from album {}"
+                    logging.debug("Music data does not match previous notify, so we should notify & keepalive.")
+                    do_notify(track_match['lookup'], full_notify=True, keepalive=True)
+                    logging.info("Notify & Keepalive sent for {} by {} from album {}"
                                  .format(track_match['lookup'].title, track_match['lookup'].artist, track_match['lookup'].album))
                     last_notify = this_notify
                 else:
-                    logging.debug("Music data is same as previous notify, so we will not notify.")
+                    logging.debug("Music data is same as previous notify, so we will only keepalive.")
+                    do_notify(track_match['lookup'], full_notify=False, keepalive=True)
+                    logging.info("Keepalive sent for {} by {} from album {}"
+                                 .format(track_match['lookup'].title, track_match['lookup'].artist,
+                                         track_match['lookup'].album))
             recording.close_stream()
         else:
             logging.info("Recording was deemed as silent, no action will be taken.")
