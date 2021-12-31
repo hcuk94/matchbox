@@ -44,12 +44,14 @@ def do_notify(track_data, full_notify=False, keepalive=False):
     providers = providers_notify.LookupProviderInterface.__subclasses__()
     for prov in providers:
         prov_name = str(prov.__name__)
-        prov_conf = config.providers_notify[prov_name]['config']
-        prov_class = prov(prov_conf)
-        if full_notify is True:
-            prov_class.send_notify(track_data)
-        if keepalive is True:
-            prov_class.send_keepalive(track_data)
+        prov_enabled = config.providers_notify[prov_name]['enabled']
+        if prov_enabled is True:
+            prov_conf = config.providers_notify[prov_name]['config']
+            prov_class = prov(prov_conf)
+            if full_notify is True:
+                prov_class.send_notify(track_data)
+            if keepalive is True:
+                prov_class.send_keepalive(track_data)
 
 
 if __name__ == '__main__':
