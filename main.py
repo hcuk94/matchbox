@@ -85,7 +85,8 @@ if __name__ == '__main__':
                     logging.debug("Music data does not match previous notify, so we should notify & keepalive.")
                     do_notify(track_match['lookup'], full_notify=True, keepalive=True)
                     logging.info("Notify & Keepalive sent for {} by {} from album {}"
-                                 .format(track_match['lookup'].title, track_match['lookup'].artist, track_match['lookup'].album))
+                                 .format(track_match['lookup'].title,
+                                         track_match['lookup'].artist, track_match['lookup'].album))
                     last_notify = this_notify
                 else:
                     logging.debug("Music data is same as previous notify, so we will only keepalive.")

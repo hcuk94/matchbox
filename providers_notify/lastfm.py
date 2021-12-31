@@ -1,5 +1,4 @@
 import pylast
-import config
 import time
 import providers_notify
 
@@ -41,5 +40,3 @@ class LastFM(providers_notify.LookupProviderInterface):
         return providers_notify.LookupResult(
             response=providers_notify.LookupResponseCode.SUCCESS
         )
-
-

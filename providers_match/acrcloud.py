@@ -2,10 +2,7 @@ import base64
 import hashlib
 import hmac
 import json
-import os.path
 import time
-from os.path import basename
-
 import requests
 import providers_match
 
