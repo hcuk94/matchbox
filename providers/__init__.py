@@ -46,7 +46,7 @@ class LookupProviderInterface:
     logger.addHandler(log_output)
 
     def __init__(self, config):
-        super().__init__(config)
+        # super().__init__(config)
         self.config = config
 
     def lookup_sample(self, sample) -> LookupResult:
