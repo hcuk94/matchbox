@@ -8,23 +8,15 @@ from inspect import isclass
 from pkgutil import iter_modules
 from importlib import import_module
 
-# Import Match Providers
-package_dir = 'providers_match'
-for (_, module_name, _) in iter_modules([package_dir]):
-    module = import_module(f"providers_match.{module_name}")
-    for attribute_name in dir(module):
-        attribute = getattr(module, attribute_name)
-        if isclass(attribute):
-            globals()[attribute_name] = attribute
-
-# Import Notify Providers
-package_dir = 'providers_notify'
-for (_, module_name, _) in iter_modules([package_dir]):
-    module = import_module(f"{package_dir}.{module_name}")
-    for attribute_name in dir(module):
-        attribute = getattr(module, attribute_name)
-        if isclass(attribute):
-            globals()[attribute_name] = attribute
+# Import Provider Modules
+package_dirs = config.package_dirs
+for package_dir in package_dirs:
+    for (_, module_name, _) in iter_modules([package_dir]):
+        module = import_module(f"{package_dir}.{module_name}")
+        for attribute_name in dir(module):
+            attribute = getattr(module, attribute_name)
+            if isclass(attribute):
+                globals()[attribute_name] = attribute
 
 
 def do_match(sample):

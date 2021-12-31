@@ -39,3 +39,6 @@ recorder_record_seconds = 10
 recorder_chunk = 1024
 recorder_channels = 1
 recorder_rate = 44100
+
+# Provider Package Directories
+package_dirs = ['providers_match', 'providers_notify']
