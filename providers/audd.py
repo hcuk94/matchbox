@@ -35,7 +35,7 @@ class Audd(providers.LookupProviderInterface):
                 )
             else:
                 return providers.LookupResult(
-                    response=status_map[status]
+                    response=providers.LookupResponseCode.NO_RESULT
                 )
         elif status == "error":
             error_code = json_response['error']['error_code']

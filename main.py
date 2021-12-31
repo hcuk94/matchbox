@@ -20,6 +20,9 @@ for (_, module_name, _) in iter_modules([package_dir]):
 
 def do_match(sample):
     providers_match = sorted(config.providers_match, key=lambda x: config.providers_match[x]['priority'])
+    result = {
+        'status': providers.LookupResponseCode.NO_RESULT
+    }
     for provider_config in providers_match:
         if config.providers_match[provider_config]['enabled'] is True:
             logging.debug("Using match provider %s", provider_config)
@@ -27,8 +30,13 @@ def do_match(sample):
             lookup_provider = provider_class(config.providers_match[provider_config]['config'])
             lookup = lookup_provider.lookup_sample(sample)
             if lookup.response == providers.LookupResponseCode.SUCCESS:
-                return lookup
-    return providers.LookupResponseCode.NO_RESULT
+                logging.debug("Successful match.")
+                result['lookup'] = lookup
+                result['status'] = lookup.response
+                return result
+            else:
+                logging.debug("Error returned from match interface: %s", lookup.response)
+    return result
 
 
 if __name__ == '__main__':
@@ -53,23 +61,23 @@ if __name__ == '__main__':
             logging.debug("Passing to match function...")
             track_match = do_match(file)
 
-            if track_match.response != providers.LookupResponseCode.SUCCESS:
-                logging.error("MRT API {} encountered error: {}".format(config.mrt_api, track_match.response))
+            if track_match['status'] != providers.LookupResponseCode.SUCCESS:
+                logging.warning("Track could not be identified by any configured matching provider")
             else:
                 this_notify = {
-                    'title': track_match.title,
-                    'artist': track_match.artist
+                    'title': track_match['lookup'].title,
+                    'artist': track_match['lookup'].artist
                 }
                 if this_notify != last_notify:
                     logging.debug("Music data does not match previous notify, so we should notify.")
                     logging.debug("Initialising notify agent...")
-                    notify = lastfm.LastFM(track_match)
+                    notify = lastfm.LastFM(track_match['lookup'])
                     logging.debug("Updating 'now playing'...")
                     notify.now_playing()
                     logging.debug("Notifying track...")
                     notify.notify()
                     logging.info("Successfully notified {} by {} from album {}"
-                                 .format(track_match.title, track_match.artist, track_match.album))
+                                 .format(track_match['lookup'].title, track_match['lookup'].artist, track_match['lookup'].album))
                     last_notify = this_notify
                 else:
                     logging.debug("Music data is same as previous notify, so we will not notify.")
