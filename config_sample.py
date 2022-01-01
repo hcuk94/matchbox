@@ -38,6 +38,15 @@ providers_notify = {
             'password': ''
         }
     },
+    'LibreFM': {
+        'enabled': False,
+        'config': {
+            'api_key': '',
+            'api_secret': '',
+            'username': '',
+            'password': ''
+        }
+    },
     'Telegram': {
         'enabled': False,
         'config': {
