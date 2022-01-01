@@ -21,5 +21,5 @@ class Telegram(providers_notify.LookupProviderInterface):
                 )
             else:
                 return providers_notify.LookupResult(
-                    response=providers_notify.LookupResponseCode.UNKNOWN_ERROR
+                    response=providers_notify.LookupResponseCode.ERROR
                 )

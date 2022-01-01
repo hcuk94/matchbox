@@ -47,6 +47,12 @@ providers_notify = {
             'password': ''
         }
     },
+    'ListenBrainz': {
+        'enabled': False,
+        'config': {
+            'user_token': ''
+        }
+    },
     'Telegram': {
         'enabled': False,
         'config': {
