@@ -10,14 +10,14 @@ log_level = 10  # 0 NOTSET, 10 DEBUG, 20 INFO, 30 WARNING, 40 ERROR, 50 CRITICAL
 # Providers - Match
 providers_match = {
     'Audd': {
-        'enabled': True,
+        'enabled': False,
         'priority': 10,
         'config': {
             'api_key': ''
         }
     },
     'ACRCloud': {
-        'enabled': True,
+        'enabled': False,
         'priority': 0,
         'config': {
             'access_key': '',
@@ -30,12 +30,22 @@ providers_match = {
 # Providers - Notify
 providers_notify = {
     'LastFM': {
-        'enabled': True,
+        'enabled': False,
         'config': {
             'api_key': '',
             'api_secret': '',
             'username': '',
             'password': ''
+        }
+    },
+    'Telegram': {
+        'enabled': False,
+        'config': {
+            'api_key': '',
+            'send_to_ids': [
+                ''
+            ],
+            'message_format': 'Now Playing: {} by {} from album {}'
         }
     }
 }

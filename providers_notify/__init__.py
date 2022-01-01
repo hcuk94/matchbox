@@ -22,6 +22,7 @@ class LookupResult:
 class LookupResponseCode(enum.Enum):
     SUCCESS = 0
     NO_RESULT = 1001
+    NOT_IMPLEMENTED = 9001
     UNKNOWN_ERROR = 9999
 
 
