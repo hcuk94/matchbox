@@ -1,3 +1,4 @@
 requests
 pyaudio
 pylast
+pylistenbrainz

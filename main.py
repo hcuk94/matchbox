@@ -53,13 +53,15 @@ def do_notify(track_data, full_notify=False, keepalive=False):
                 if notify_action.response == providers_notify.LookupResponseCode.SUCCESS:
                     logging.debug("Successful full notify to {}".format(prov_name))
                 else:
-                    logging.warning("Error returned from full notify provider {}:".format(prov_name, notify_action.response))
+                    logging.warning("Error returned from full notify provider {}:"
+                                    .format(prov_name, str(notify_action.response)))
             if keepalive is True:
                 notify_action = prov_class.send_keepalive(track_data)
                 if notify_action.response == providers_notify.LookupResponseCode.SUCCESS:
                     logging.debug("Successful keepalive to {}".format(prov_name))
                 else:
-                    logging.warning("Error returned from keepalive notify provider {}:".format(prov_name, notify_action.response))
+                    logging.warning("Error returned from keepalive notify provider {}:"
+                                    .format(prov_name, str(notify_action.response)))
 
 
 if __name__ == '__main__':
