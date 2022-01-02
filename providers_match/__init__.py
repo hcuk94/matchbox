@@ -40,15 +40,9 @@ class LookupResponseCode(enum.Enum):
 
 
 class LookupProviderInterface:
-    logging.basicConfig(
-        level=os.environ.get('LOG_LEVEL', 'DEBUG')
-    )
     logger = logging.getLogger(__name__)
-    log_output = logging.StreamHandler()
-    logger.addHandler(log_output)
 
     def __init__(self, config):
-        # super().__init__(config)
         self.config = config
 
     def lookup_sample(self, sample) -> LookupResult:

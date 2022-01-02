@@ -65,7 +65,7 @@ def do_notify(track_data, full_notify=False, keepalive=False):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=config.log_level, filename=config.log_filename,
+    logging.basicConfig(level=config.log_level,
                         filemode="a+", format="%(asctime)-15s %(levelname)-8s %(message)s")
     last_notify = {}
     logging.info("Application Started.")

@@ -28,12 +28,7 @@ class LookupResponseCode(enum.Enum):
 
 
 class LookupProviderInterface:
-    logging.basicConfig(
-        level=os.environ.get('LOG_LEVEL', 'DEBUG')
-    )
     logger = logging.getLogger(__name__)
-    log_output = logging.StreamHandler()
-    logger.addHandler(log_output)
 
     def __init__(self, config):
         self.config = config
