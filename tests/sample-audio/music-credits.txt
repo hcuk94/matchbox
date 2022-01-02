@@ -5,3 +5,6 @@ Grace Hayhurst - https://gracehr.st/
 
 # joystock-popsicle.wav
 Joystock - https://www.joystock.org
+
+# generic-noise.wav
+Me clapping and moving things on my desk.

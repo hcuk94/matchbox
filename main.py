@@ -65,8 +65,7 @@ def do_notify(track_data, full_notify=False, keepalive=False):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=config.log_level,
-                        filemode="a+", format="%(asctime)-15s %(levelname)-8s %(message)s")
+    logging.basicConfig(level=config.log_level, format="%(asctime)-15s %(levelname)-8s %(message)s")
     last_notify = {}
     logging.info("Application Started.")
 
@@ -87,7 +86,7 @@ if __name__ == '__main__':
             track_match = do_match(file)
 
             if track_match['status'] != providers_match.LookupResponseCode.SUCCESS:
-                logging.warning("Track could not be identified by any configured matching provider")
+                logging.debug("Track could not be identified by any configured matching provider")
             else:
                 this_notify = {
                     'title': track_match['lookup'].title,

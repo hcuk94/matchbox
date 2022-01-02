@@ -1,13 +1,23 @@
 import config
+import io
+import wave
 from providers_match.acrcloud import ACRCloud
 
-# This one should match - Music by Joystock - https://www.joystock.org
+# This one should match
 # file = 'sample-audio/joystock-popsicle.wav'
-# This one should not
-file = 'sample-audio/the_depressed_elephant_pt1.wav'
+# This is not supposed to match, but may match to something else
+# file = 'sample-audio/the_depressed_elephant_pt2.wav'
+# This is just some noise and should not match
+file = 'sample-audio/generic-noise.wav'
 
+provider = ACRCloud(config.providers_match['ACRCloud']['config'])
 
-audd = ACRCloud(config.acrcloud_config)
-output = audd.lookup_sample(file)
+wav_data = io.BytesIO()
+with wave.open(wav_data, 'wb') as w:
+    with wave.open(file, 'rb') as r:
+        w.setparams(r.getparams())
+        w.writeframes(r.readframes(r.getnframes()))
+    lookup = provider.lookup_sample(wav_data.getbuffer())
 
-print("Processed output:" + str(output))
+print("Status: " + str(lookup.response))
+print("Processed output: " + str(lookup))
