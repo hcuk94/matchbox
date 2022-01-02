@@ -1,3 +1,4 @@
+#!/usr/bin/python -u
 import config
 import providers_match
 import providers_notify
