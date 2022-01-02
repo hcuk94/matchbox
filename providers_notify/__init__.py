@@ -21,9 +21,10 @@ class LookupResult:
 
 class LookupResponseCode(enum.Enum):
     SUCCESS = 0
-    NO_RESULT = 1001
-    NOT_IMPLEMENTED = 9001
-    ERROR = 9999
+    BAD_AUTH = 901
+    INVALID_API_KEY = 902
+    INVALID_USER_ID = 903
+    UNKNOWN_ERROR = 999
 
 
 class LookupProviderInterface:
