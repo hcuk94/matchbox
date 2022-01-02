@@ -4,6 +4,8 @@ import providers_match
 
 status_map = {
     'success': providers_match.LookupResponseCode.SUCCESS,
+    900: providers_match.LookupResponseCode.INVALID_API_KEY,
+    901: providers_match.LookupResponseCode.INVALID_API_KEY,
     907: providers_match.LookupResponseCode.NO_RESULT
 }
 

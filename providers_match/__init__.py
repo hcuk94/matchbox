@@ -34,8 +34,9 @@ class LookupResult:
 
 class LookupResponseCode(enum.Enum):
     SUCCESS = 0
-    NO_RESULT = 1001
-    UNKNOWN_ERROR = 9999
+    NO_RESULT = 101
+    INVALID_API_KEY = 902
+    UNKNOWN_ERROR = 999
 
 
 class LookupProviderInterface:

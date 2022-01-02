@@ -6,6 +6,13 @@ import time
 import requests
 import providers_match
 
+status_map = {
+    3001: providers_match.LookupResponseCode.INVALID_API_KEY,
+    3003: providers_match.LookupResponseCode.INVALID_API_KEY,
+    3015: providers_match.LookupResponseCode.INVALID_API_KEY,
+    1001: providers_match.LookupResponseCode.NO_RESULT
+}
+
 
 class ACRCloud(providers_match.LookupProviderInterface):
     def lookup_sample(self, sample) -> providers_match.LookupResult:
@@ -39,8 +46,12 @@ class ACRCloud(providers_match.LookupProviderInterface):
                 album=json_response['metadata']['music'][0]['album']['name']
             )
         else:
+            try:
+                error = status_map[status]
+            except KeyError:
+                error = providers_match.LookupResponseCode.UNKNOWN_ERROR
             return providers_match.LookupResult(
-                response=providers_match.LookupResponseCode.NO_RESULT
+                response=error
             )
 
     def sign_request(self, method, uri, data_type, timestamp):
