@@ -7,6 +7,7 @@ retrigger_time = 180
 log_level = 10  # 0 NOTSET, 10 DEBUG, 20 INFO, 30 WARNING, 40 ERROR, 50 CRITICAL
 
 # Providers - Match
+# NB: Priority is in low-high order, 0 is the highest priority.
 providers_match = {
     'Audd': {
         'enabled': False,
@@ -65,11 +66,11 @@ providers_notify = {
 }
 
 # Recorder Config
-recorder_silence_threshold = 500
-recorder_record_seconds = 15
-recorder_chunk = 1024
-recorder_channels = 1
-recorder_rate = 44100
+recorder_silence_threshold = 500 # Silence detection threshold
+recorder_record_seconds = 15 # Length of audio sample
+recorder_chunk = 1024 # Audio frames per buffer
+recorder_channels = 1 # Number of audio channels
+recorder_rate = 44100 # Sample rate
 
 # Provider Package Directories
 package_dirs = ['providers_match', 'providers_notify']

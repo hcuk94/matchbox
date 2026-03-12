@@ -26,6 +26,8 @@ Originally designed as a means to 'scrobble' my vinyl records to last.fm, it now
 -   ACRCloud
 -   AudD
 
+ACRCloud has a free tier which allows 100 match requests per day.
+
 ## Notify providers
 
 -   LastFM
@@ -123,3 +125,37 @@ Logs will indicate:
 -   provider lookup
 -   track match
 -   notification activity
+
+------------------------------------------------------------------------
+
+# Troubleshooting
+
+## config module not found
+
+Ensure:
+
+    config_sample.py → config.py
+
+## PyAudio installation issues
+
+PyAudio depends on **PortAudio** and may require system audio libraries
+to be installed, especially on Mac devices.
+
+## No tracks detected
+
+Check:
+
+-   microphone input
+-   silence threshold
+-   provider credentials
+-   provider priority configuration
+
+## Notifications not appearing
+
+Verify:
+
+-   provider enabled
+-   credentials correct
+-   API tokens valid
+
+------------------------------------------------------------------------
