@@ -4,7 +4,7 @@
 retrigger_time = 180
 
 # Logging Config
-log_level = 10  # 0 NOTSET, 10 DEBUG, 20 INFO, 30 WARNING, 40 ERROR, 50 CRITICAL
+log_level = 20  # 0 NOTSET, 10 DEBUG, 20 INFO, 30 WARNING, 40 ERROR, 50 CRITICAL
 
 # Providers - Match
 # NB: Priority is in low-high order, 0 is the highest priority.
