@@ -1,6 +1,6 @@
 # MatchBox
 
-MatchBox listens to audio from your machine, tries to identify the currently playing song, and forwards the result to one or more downstream services such as Last.fm, Libre.fm, ListenBrainz, or Telegram. It is designed for people who play music physically or outside a streaming app but still want "now playing" updates or scrobbles.
+MatchBox listens to an audio source of your choice, tries to identify the currently playing song, and forwards the result to one or more downstream services such as Last.fm, Libre.fm, ListenBrainz, or Telegram. It is designed for people who play music physically or outside a streaming app but still want "now playing" updates or scrobbles.
 
 Originally designed as a means to 'scrobble' my vinyl records to last.fm, it now adopts a modular design, allowing numerous services to be notified upon a successful match of a track.
 
