@@ -40,8 +40,8 @@ providers_notify = {
     'LibreFM': {
         'enabled': False,
         'config': {
-            'api_key': '',
-            'api_secret': '',
+            'api_key': 'abcdef1234567890abcdef1234567890', # Not implemented, can be left as-is
+            'api_secret': 'abcdef1234567890abcdef1234567890', # Not implemented, can be left as-is
             'username': '',
             'password': ''
         }
