@@ -24,8 +24,8 @@ services:
 
     command: >
       bash -lc "
-        apt update &&
-        apt install -y --no-install-recommends portaudio19-dev libasound2-dev &&
+        apt-get update &&
+        apt-get install -y --no-install-recommends portaudio19-dev libasound2-dev &&
         pip install --no-cache-dir -r requirements.txt &&
         python -u main.py
       "
