@@ -1,0 +1,31 @@
+services:
+  matchbox:
+    image: python:3.12-bookworm
+    container_name: matchbox
+    working_dir: /app
+    restart: unless-stopped
+
+    # Audio input passthrough (ALSA)
+    devices:
+      - /dev/snd:/dev/snd
+
+    environment:
+      - PYTHONUNBUFFERED=1
+
+    volumes:
+      # Mount the app source
+      - ./:/app:rw
+      # Optional but often helpful: pass through ALSA config so "default" input matches host.
+      # If you want to force a specific ALSA device, you can also mount a .asoundrc file
+      - ~/.asoundrc:/home/app/.asoundrc:ro
+      - /etc/asound.conf:/etc/asound.conf:ro
+      # Optional: keep container time aligned with host
+      - /etc/localtime:/etc/localtime:ro
+
+    command: >
+      bash -lc "
+        apt update &&
+        apt install -y --no-install-recommends portaudio19-dev libasound2-dev &&
+        pip install --no-cache-dir -r requirements.txt &&
+        python -u main.py
+      "
