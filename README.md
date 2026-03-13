@@ -102,6 +102,15 @@ cp config_sample.py config.py
 
 Edit `config.py` with your provider credentials.
 
+For Last.fm, set `api_key` and `api_secret`, then run:
+
+``` bash
+python3 lastfm_oauth.py
+```
+
+This performs Last.fm's desktop authorization flow and prints the `session_key`
+to paste back into `config.py`.
+
 Start MatchBox with:
 
 ``` bash

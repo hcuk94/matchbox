@@ -34,8 +34,7 @@ providers_notify = {
         'config': {
             'api_key': '',
             'api_secret': '',
-            'username': '',
-            'password': ''
+            'session_key': ''
         }
     },
     'LibreFM': {

@@ -15,14 +15,19 @@ class LastFM(providers_notify.LookupProviderInterface):
         return notify_response
 
     def __send_request__(self, req_data, req_type):
-        pass_hash = pylast.md5(self.config['password'])
         track_data = req_data
+        session_key = self.config.get('session_key') or self.config.get('token')
         try:
+            if not session_key:
+                self.logger.debug("Last.fm session_key is missing from config.")
+                return providers_notify.LookupResult(
+                    response=providers_notify.LookupResponseCode.BAD_AUTH
+                )
+
             notifier = pylast.LastFMNetwork(
                 api_key=self.config['api_key'],
                 api_secret=self.config['api_secret'],
-                username=self.config['username'],
-                password_hash=pass_hash,
+                session_key=session_key,
             )
             if req_type == 'notify':
                 notifier.scrobble(
@@ -38,9 +43,17 @@ class LastFM(providers_notify.LookupProviderInterface):
                     album=track_data.album
                 )
         except pylast.WSError as e:
+            error_code = getattr(e, 'status', None)
+            if error_code == 9:
+                response = providers_notify.LookupResponseCode.BAD_AUTH
+            elif error_code in (10, 26):
+                response = providers_notify.LookupResponseCode.INVALID_API_KEY
+            else:
+                response = providers_notify.LookupResponseCode.UNKNOWN_ERROR
+
             self.logger.debug("Error from Last.fm: {}".format(repr(e)))
             return providers_notify.LookupResult(
-                response=providers_notify.LookupResponseCode.UNKNOWN_ERROR
+                response=response
             )
         else:
             return providers_notify.LookupResult(
