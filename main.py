@@ -1,8 +1,8 @@
 #!/usr/bin/python -u
 import config
-import providers_match
-import providers_notify
-import recorder
+from matchbox import providers_match
+from matchbox import providers_notify
+import matchbox.recorder as recorder
 import logging
 from time import sleep
 from inspect import isclass

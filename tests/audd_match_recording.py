@@ -1,7 +1,7 @@
 import config
 import io
 import wave
-from providers_match.audd import Audd
+from matchbox.providers_match.audd import Audd
 
 # This one should match
 # file = 'sample-audio/joystock-popsicle.wav'

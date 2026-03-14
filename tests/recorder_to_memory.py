@@ -1,4 +1,4 @@
-import recorder
+import matchbox.recorder as recorder
 
 test = recorder.Recording()
 print("Recording...")

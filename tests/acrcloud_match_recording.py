@@ -1,7 +1,7 @@
 import config
 import io
 import wave
-from providers_match.acrcloud import ACRCloud
+from matchbox.providers_match.acrcloud import ACRCloud
 
 # This one should match
 # file = 'sample-audio/joystock-popsicle.wav'
