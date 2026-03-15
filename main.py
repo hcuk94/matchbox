@@ -13,7 +13,7 @@ from importlib import import_module
 package_dirs = config.package_dirs
 for package_dir in package_dirs:
     for (_, module_name, _) in iter_modules([package_dir]):
-        module = import_module(f"{package_dir}.{module_name}")
+        module = import_module(f"matchbox.{package_dir}.{module_name}")
         for attribute_name in dir(module):
             attribute = getattr(module, attribute_name)
             if isclass(attribute):
