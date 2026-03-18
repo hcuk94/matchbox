@@ -4,7 +4,7 @@ import hmac
 import json
 import time
 import requests
-import providers_match
+from matchbox import providers_match
 
 status_map = {
     3001: providers_match.LookupResponseCode.INVALID_API_KEY,

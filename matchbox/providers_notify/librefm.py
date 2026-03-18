@@ -1,6 +1,6 @@
 import pylast
 import time
-import providers_notify
+from matchbox import providers_notify
 
 
 class LibreFM(providers_notify.LookupProviderInterface):

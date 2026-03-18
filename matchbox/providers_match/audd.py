@@ -1,6 +1,6 @@
 import requests
 
-import providers_match
+from matchbox import providers_match
 
 status_map = {
     'success': providers_match.LookupResponseCode.SUCCESS,

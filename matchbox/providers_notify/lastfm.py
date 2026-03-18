@@ -1,6 +1,6 @@
 import pylast
 import time
-import providers_notify
+from matchbox import providers_notify
 
 
 class LastFM(providers_notify.LookupProviderInterface):

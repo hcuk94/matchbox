@@ -1,4 +1,4 @@
-import providers_notify
+from matchbox import providers_notify
 import requests
 
 status_map = {

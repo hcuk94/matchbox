@@ -9,15 +9,21 @@ from inspect import isclass
 from pkgutil import iter_modules
 from importlib import import_module
 
-# Import Provider Modules
-package_dirs = config.package_dirs
-for package_dir in package_dirs:
-    for (_, module_name, _) in iter_modules([package_dir]):
-        module = import_module(f"matchbox.{package_dir}.{module_name}")
+def load_provider_classes(package):
+    provider_classes = {}
+    for (_, module_name, _) in iter_modules(package.__path__):
+        module = import_module(f"{package.__name__}.{module_name}")
         for attribute_name in dir(module):
             attribute = getattr(module, attribute_name)
-            if isclass(attribute):
-                globals()[attribute_name] = attribute
+            if isclass(attribute) and issubclass(attribute, package.LookupProviderInterface) \
+                    and attribute is not package.LookupProviderInterface:
+                provider_classes[attribute_name] = attribute
+
+    return provider_classes
+
+
+MATCH_PROVIDER_CLASSES = load_provider_classes(providers_match)
+NOTIFY_PROVIDER_CLASSES = load_provider_classes(providers_notify)
 
 
 def do_match(sample):
@@ -28,7 +34,10 @@ def do_match(sample):
     for provider_config in providers:
         if config.providers_match[provider_config]['enabled'] is True:
             logging.debug("Using match provider %s", provider_config)
-            provider_class = globals()[provider_config]
+            provider_class = MATCH_PROVIDER_CLASSES.get(provider_config)
+            if provider_class is None:
+                logging.error("Configured match provider %s is not available", provider_config)
+                continue
             lookup_provider = provider_class(config.providers_match[provider_config]['config'])
             lookup = lookup_provider.lookup_sample(sample)
             if lookup.response == providers_match.LookupResponseCode.SUCCESS:
@@ -42,9 +51,7 @@ def do_match(sample):
 
 
 def do_notify(track_data, full_notify=False, keepalive=False):
-    providers = providers_notify.LookupProviderInterface.__subclasses__()
-    for prov in providers:
-        prov_name = str(prov.__name__)
+    for prov_name, prov in NOTIFY_PROVIDER_CLASSES.items():
         prov_enabled = config.providers_notify[prov_name]['enabled']
         if prov_enabled is True:
             prov_conf = config.providers_notify[prov_name]['config']
